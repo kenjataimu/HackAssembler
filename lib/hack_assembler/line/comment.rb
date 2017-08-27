@@ -1,0 +1,2 @@
+class Comment < Line
+end

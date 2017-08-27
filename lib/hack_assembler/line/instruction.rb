@@ -1,0 +1,2 @@
+class Instruction < Line
+end
