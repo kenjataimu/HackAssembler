@@ -21,4 +21,10 @@ class SymbolTableTest < MiniTest::Test
 
     assert_equal 5, @symbol_table.get("R5")
   end
+
+  def test_gives_variable_address
+    assert_equal 16, @symbol_table.get("variable_a")
+    assert_equal 16, @symbol_table.get("variable_a")
+    assert_equal 17, @symbol_table.get("variable_b")
+  end
 end

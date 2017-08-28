@@ -23,6 +23,7 @@ class SymbolTable
       "R14"  => 14,
       "R15"  => 15
     }
+    @free_address = 16
   end
 
   def set(symbol, value)
@@ -30,6 +31,12 @@ class SymbolTable
   end
 
   def get(symbol)
-    @table[symbol]
+    @table[symbol] ||= next_address
+  end
+
+  private
+
+  def next_address
+    @free_address.tap { @free_address += 1 }
   end
 end

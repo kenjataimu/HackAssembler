@@ -14,7 +14,15 @@ class Parser
   private
 
   def instructions
-    @instructions ||= extract_instructions
+    @instructions ||= Enumerator.new do |enum|
+      extract_instructions.each do |instruction|
+        if instruction.is_a?(AInstruction)
+          handle_address(instruction) 
+        end
+
+        enum << instruction
+      end
+    end
   end
 
   def extract_instructions
@@ -44,6 +52,12 @@ class Parser
       while asm_line = file.gets&.chomp
         yield Line.parse(asm_line)
       end
+    end
+  end
+
+  def handle_address(instruction)
+    if instruction.symbolic?
+      instruction.address = @symbol_table.get(instruction.label)
     end
   end
 end
