@@ -3,6 +3,7 @@ require "hack_assembler/line"
 class Parser
   def initialize(asm_file_path)
     @asm_file_path = asm_file_path
+    @symbol_table = {}
   end
 
   def each_instruction
@@ -12,23 +13,25 @@ class Parser
   private
 
   def instructions
-    @instructions ||= instructions_enum
+    @instructions ||= extract_instructions
   end
 
-  def instructions_enum
-    Enumerator.new do |enum|
-      commands.with_index do |command, index|
-        enum << command if command.is_a? Instruction
+  def extract_instructions
+    instruction_number = 0
+
+    commands.reject do |command|
+      command.is_a?(Label).tap do |label|
+        if label
+          @symbol_table[command.name] ||= instruction_number
+        else
+          instruction_number += 1
+        end
       end
     end
-  end 
-
-  def commands
-    @commands ||= commands_enum
   end
 
-  def commands_enum
-    Enumerator.new do |enum|
+  def commands
+    @commands ||= Enumerator.new do |enum|
       each_line do |line|
         enum << line if line.is_a? Command
       end
