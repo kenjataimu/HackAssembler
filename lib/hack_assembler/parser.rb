@@ -1,9 +1,10 @@
 require "hack_assembler/line"
+require "hack_assembler/symbol_table"
 
 class Parser
   def initialize(asm_file_path)
     @asm_file_path = asm_file_path
-    @symbol_table = {}
+    @symbol_table = SymbolTable.new
   end
 
   def each_instruction
@@ -17,14 +18,14 @@ class Parser
   end
 
   def extract_instructions
-    instruction_number = 0
+    number = 0
 
     commands.reject do |command|
       command.is_a?(Label).tap do |label|
         if label
-          @symbol_table[command.name] ||= instruction_number
+          @symbol_table.set(command.name, number)
         else
-          instruction_number += 1
+          number += 1
         end
       end
     end
