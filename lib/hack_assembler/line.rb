@@ -17,7 +17,8 @@ class Line
     end
 
     def parse(asm_line)
-      type(asm_line).new(asm_line)
+      line = asm_line.strip
+      type(line).new(line)
     end
   end
 

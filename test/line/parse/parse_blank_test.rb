@@ -6,6 +6,6 @@ class ParseBlankTest < ParseTest
   end
 
   def test_parses_white_chars_line
-    assert_parses("             ")
+    assert_parses("             ", "")
   end
 end

@@ -1,0 +1,2 @@
+class Command < Line
+end

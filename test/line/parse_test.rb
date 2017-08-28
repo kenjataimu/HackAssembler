@@ -7,10 +7,10 @@ class ParseTest < LineTest
     @type = Object.const_get(self.class.to_s[5..-5])
   end
 
-  def assert_parses(asm_line)
+  def assert_parses(asm_line, output=asm_line)
     line = Line.parse(asm_line)
     assert_instance_of @type, line
-    assert_equal asm_line, line.body
+    assert_equal output, line.body
   end
 
   def assert_raises_unknown(asm_line)
