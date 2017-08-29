@@ -1,4 +1,6 @@
 require "hack_assembler/line/instruction"
 
-class CInstruction < Instruction
+module HackAssembler
+  class CInstruction < Instruction
+  end
 end

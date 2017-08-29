@@ -28,7 +28,7 @@ class EachInstructionTest < ParserTest
   end
 
   def test_yields_1st_instruction
-    assert_instance_of AInstruction, instruction(1)
+    assert_instance_of HackAssembler::AInstruction, instruction(1)
   end
 
   def test_1st_instruction_has_proper_body
@@ -36,7 +36,7 @@ class EachInstructionTest < ParserTest
   end
 
   def test_yields_2nd_instruction
-    assert_kind_of CInstruction, instruction(2)
+    assert_kind_of HackAssembler::CInstruction, instruction(2)
   end
 
   def test_2nd_instruction_has_proper_body

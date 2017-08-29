@@ -1,2 +1,4 @@
-class Comment < Line
+module HackAssembler
+  class Comment < Line
+  end
 end

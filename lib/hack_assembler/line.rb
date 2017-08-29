@@ -1,29 +1,31 @@
-class Line
-  class UnknownInstructionError < StandardError; end
+module HackAssembler
+  class Line
+    class UnknownInstructionError < StandardError; end
 
-  attr_reader :body
+    attr_reader :body
 
-  class << self
-    def type(asm_line)
-      case asm_line
-      when /^\s*$/ then Blank
-      when /^\/\/.*$/ then Comment
-      when /^\(\S+\)$/ then Label
-      when /^@\S+$/ then AInstruction
-      when /^.+;.+$/ then CInstruction
-      else
-        raise UnknowInstructionError
+    class << self
+      def type(asm_line)
+        case asm_line
+        when /^\s*$/ then Blank
+        when /^\/\/.*$/ then Comment
+        when /^\(\S+\)$/ then Label
+        when /^@\S+$/ then AInstruction
+        when /^.+;.+$/ then CInstruction
+        else
+          raise UnknowInstructionError
+        end
+      end
+
+      def parse(asm_line)
+        line = asm_line.strip
+        type(line).new(line)
       end
     end
 
-    def parse(asm_line)
-      line = asm_line.strip
-      type(line).new(line)
+    def initialize(body)
+      @body = body
     end
-  end
-
-  def initialize(body)
-    @body = body
   end
 end
 

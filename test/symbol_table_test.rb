@@ -3,7 +3,7 @@ require "hack_assembler/symbol_table"
 
 class SymbolTableTest < MiniTest::Test
   def setup
-    @symbol_table = SymbolTable.new
+    @symbol_table = HackAssembler::SymbolTable.new
   end
 
   def test_initializes_with_default_symbols
