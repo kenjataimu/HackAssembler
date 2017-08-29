@@ -1,6 +1,6 @@
 require "parser_test"
 
-class EachInstructionTest < ParserTest
+class InstructionsTest < ParserTest
   def asm_code
     <<~ASM
      // ASM test code
@@ -14,17 +14,17 @@ class EachInstructionTest < ParserTest
   end
 
   def instruction(number)
-    (number - 1).times { @each_instruction.next }
-    @each_instruction.next
+    (number - 1).times { @instructions.next }
+    @instructions.next
   end
 
   def setup
     super
-    @each_instruction = @parser.each_instruction
+    @instructions = @parser.instructions
   end
 
   def test_is_enumerator
-    assert_instance_of Enumerator, @each_instruction
+    assert_instance_of Enumerator, @instructions
   end
 
   def test_yields_1st_instruction

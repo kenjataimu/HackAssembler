@@ -8,12 +8,6 @@ module HackAssembler
       @symbol_table = SymbolTable.new
     end
 
-    def each_instruction
-      instructions.each
-    end
-
-    private
-
     def instructions
       @instructions ||= Enumerator.new do |enum|
         extract_instructions.each do |instruction|
@@ -25,6 +19,8 @@ module HackAssembler
         end
       end
     end
+
+    private
 
     def extract_instructions
       number = 0
