@@ -15,5 +15,15 @@ module HackAssembler
     def label
       body[1..-1]
     end
+
+    def to_binary
+      "0%015b" % decimal_address
+    end
+
+    private
+
+    def decimal_address
+      address || label.to_i
+    end
   end
 end

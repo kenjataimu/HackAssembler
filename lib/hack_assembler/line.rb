@@ -13,7 +13,7 @@ module HackAssembler
         when /^@\S+$/ then AInstruction
         when /^.+;.+$/ then CInstruction
         else
-          raise UnknowInstructionError
+          raise UnknownInstructionError
         end
       end
 
