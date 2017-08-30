@@ -10,6 +10,10 @@ class ParseAInstructionTest < ParseTest
   end
 
   def test_raises_on_invalid_a_instruction
-    assert_raises_unknown("@")
+    assert_raises_invalid("@")
+  end
+
+  def test_parses_instruction_with_comment
+    assert_parses("@var // simple var")
   end
 end

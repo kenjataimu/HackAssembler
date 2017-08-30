@@ -4,6 +4,10 @@ module HackAssembler
   class AInstruction < Instruction
     attr_accessor :address
 
+    def self.regexp
+      /\@\S+/
+    end
+
     def numeric?
       label =~ /^\d+$/
     end

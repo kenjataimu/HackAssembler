@@ -13,8 +13,8 @@ class ParseTest < LineTest
     assert_equal output, line.body
   end
 
-  def assert_raises_unknown(asm_line)
-    assert_raises "HackAssembler::Line::UnknownInstructionError" do
+  def assert_raises_invalid(asm_line)
+    assert_raises "HackAssembler::Line::InvalidLineError" do
       HackAssembler::Line.parse(asm_line)
     end
   end

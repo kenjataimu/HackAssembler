@@ -6,6 +6,6 @@ class ParseLabelTest < ParseTest
   end
 
   def test_raises_on_invalid_label
-    assert_raises_unknown("(invalid")
+    assert_raises_invalid("(invalid")
   end
 end

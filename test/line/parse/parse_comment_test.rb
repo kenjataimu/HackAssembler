@@ -13,6 +13,10 @@ class ParseCommentTest < ParseTest
     assert_parses("////*****////other comment !@#$%^&*() /////*****/")
   end
 
+  def test_raises_on_invalid_comment
+    assert_raises_invalid("asfsadhf asdfsa // dsfasdfhlasd ")
+  end
+
   def test_parses_very_long_comment
     assert_parses("// veeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeery loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong comment")
   end
