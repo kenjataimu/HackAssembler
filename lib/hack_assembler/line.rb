@@ -7,10 +7,6 @@ module HackAssembler
     @@types = []
 
     class << self
-      def =~(asm_line)
-        /^#{regexp}(#{Comment.regexp})?$/ =~ asm_line
-      end
-
       def inherited(subclass)
         add_type(self, subclass)
       end
@@ -20,12 +16,21 @@ module HackAssembler
         @@types << subclass
       end
 
-      def parse(asm_line)
-        type(asm_line).new(asm_line.strip)
+      def =~(asm_line)
+        /\A\s*(?<command>#{regexp})\s*(?:#{Comment.regexp})?\z/ =~ asm_line
+        $1
       end
 
-      def type(asm_line)
-        @@types.find{ |type| type =~ asm_line } or raise InvalidLineError
+      def try_parse(asm_line)
+        if match = self =~ asm_line
+          new(match)
+        end
+      end
+
+      def parse(asm_line)
+        @@types.lazy.map{ |type|
+          type.try_parse(asm_line)
+        }.find{ |a| !a.nil? } or raise InvalidLineError
       end
     end
 

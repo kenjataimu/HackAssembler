@@ -18,6 +18,6 @@ class ParseCInstructionTest < ParseTest
   end
 
   def test_parses_instruction_with_comment
-    assert_parses("D-1;JLE // some comment")
+    assert_parses("D-1;JLE // some comment", "D-1;JLE")
   end
 end

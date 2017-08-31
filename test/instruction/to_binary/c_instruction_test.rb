@@ -13,6 +13,12 @@ class CInstructionToBinaryTest < MiniTest::Test
     assert_equal "1111110000010000", @instruction.to_binary
   end
 
+  def test_translates_other_assignment
+    @instruction = HackAssembler::CInstruction.new("    D=D+A")
+
+    assert_equal "1110000010010000", @instruction.to_binary
+  end
+
   def test_translates_jump_instruction
     @instruction = HackAssembler::CInstruction.new("D-1;JLE")
 

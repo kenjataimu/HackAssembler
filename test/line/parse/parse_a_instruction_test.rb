@@ -14,6 +14,6 @@ class ParseAInstructionTest < ParseTest
   end
 
   def test_parses_instruction_with_comment
-    assert_parses("@var // simple var")
+    assert_parses("@var // simple var", "@var")
   end
 end
