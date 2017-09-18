@@ -1,2 +1,3 @@
-# HackAssembler
-Assembler written in Ruby for Hack Computer. My solution to Nan2Tetris project 6 assignment.
+Jack language compiler written for Hack Computer platform in Ruby. Includes: Jack to VM compiler, VM translator and Hack Assembler.
+
+More info about Hack platform and tools here: http://nand2tetris.org
