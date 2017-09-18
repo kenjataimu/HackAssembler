@@ -1,11 +1,11 @@
 require "test_helper"
-require "hack_assembler/parser"
+require "hack_rb/assembler/parser"
 
 class ParserTest < MiniTest::Test
   def setup
     @stream = StringIO.new
     @stream.write(asm_code)
     @stream.rewind
-    @parser = HackAssembler::Parser.new(@stream)
+    @parser = HackRB::Assembler::Parser.new(@stream)
   end
 end

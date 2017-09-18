@@ -1,9 +1,9 @@
 require "test_helper"
-require "hack_assembler/symbol_table"
+require "hack_rb/assembler/symbol_table"
 
 class SymbolTableTest < MiniTest::Test
   def setup
-    @symbol_table = HackAssembler::SymbolTable.new
+    @symbol_table = HackRB::Assembler::SymbolTable.new
   end
 
   def test_initializes_with_default_symbols

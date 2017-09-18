@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative "../lib/hack_assembler"
+require_relative "../lib/hack_rb/hack_assembler"
 
-HackAssembler.assembly(STDIN, STDOUT)
+HackRB::Assembler.assembly(STDIN, STDOUT)

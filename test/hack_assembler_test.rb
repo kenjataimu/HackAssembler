@@ -1,5 +1,5 @@
 require "test_helper"
-require "hack_assembler"
+require "hack_rb/assembler"
 
 class HackAssemblerTest < MiniTest::Test
   class HackTestProgram
@@ -28,7 +28,7 @@ class HackAssemblerTest < MiniTest::Test
   def assert_assembles_program(program_name)
     program = HackTestProgram.new(program_name)
     output_stream = StringIO.new
-    HackAssembler.assembly(program.stream, output_stream)
+    HackRB::Assembler.assembly(program.stream, output_stream)
     output_stream.rewind
 
     assert_equal program.binary, output_stream.read

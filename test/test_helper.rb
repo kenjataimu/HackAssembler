@@ -1,2 +1,2 @@
 require "minitest/autorun"
-require "hack_assembler"
+require "hack_rb"
