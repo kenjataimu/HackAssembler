@@ -1,5 +1,5 @@
 module HackRB
-  module Assembler
+  module VMTranslator
     class Line
       def self.parse(vm_line)
         case vm_line
@@ -10,7 +10,4 @@ module HackRB
   end
 end
 
-require "hack_rb/vm_translator/line/push_operation"
-require "hack_rb/vm_translator/line/pop_operation"
-require "hack_rb/vm_translator/line/unary_operation"
 require "hack_rb/vm_translator/line/binary_operation"

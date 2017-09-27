@@ -10,7 +10,7 @@ module HackRB
       def instructions
         @instructions ||= Enumerator.new do |enum|
           while vm_line = @stream.gets
-            yield Line.parse(vm_line.chomp)
+            enum << Line.parse(vm_line.chomp)
           end
         end
       end

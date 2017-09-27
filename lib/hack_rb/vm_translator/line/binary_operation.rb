@@ -1,4 +1,4 @@
-require "hack_rb/assembler/line/instruction"
+require "hack_rb/vm_translator/line"
 
 module HackRB
   module VMTranslator
@@ -8,7 +8,7 @@ module HackRB
       end
 
       def to_asm
-        case body
+        case @body
         when "add"
           %w[
             @SP
