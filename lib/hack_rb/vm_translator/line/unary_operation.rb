@@ -15,8 +15,7 @@ module HackRB
           %w[
             @SP
             A=M-1
-            D=-M 
-            M=D-1
+            M=!M
           ]
         end
       end

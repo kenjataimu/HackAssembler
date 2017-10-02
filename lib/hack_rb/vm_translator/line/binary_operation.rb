@@ -98,6 +98,26 @@ module HackRB
             M=D
           ]
         end
+        when "and"
+          %w[
+            @SP
+            M=M-1
+            A=M
+            D=M
+            A=A-1
+            M=D&M
+          ]
+        end
+        when "or"
+          %w[
+            @SP
+            M=M-1
+            A=M
+            D=M
+            A=A-1
+            M=D|M
+          ]
+        end
       end
     end
   end

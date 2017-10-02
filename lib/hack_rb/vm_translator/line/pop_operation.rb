@@ -5,7 +5,9 @@ module HackRB
     class PopOperation < Line
       SEGMENTS = {
         "local" => "LCL",
-        "argument" => "ARG"
+        "argument" => "ARG",
+        "this" => "THIS",
+        "that" => "THAT"
       }
 
       def initialize(body, number)

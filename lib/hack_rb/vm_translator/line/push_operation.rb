@@ -5,7 +5,9 @@ module HackRB
     class PushOperation < Line
       SEGMENTS = {
         "local" => "LCL",
-        "argument" => "ARG"
+        "argument" => "ARG",
+        "this" => "THIS",
+        "that" => "THAT"
       }
 
       def initialize(body, number)
@@ -19,17 +21,29 @@ module HackRB
       end
 
       def to_asm
-        %W[
-          @#{@segment}
-          D=M
-          @#{@offset}
-          A=D+A
-          D=M
-          @SP
-          M=M+1
-          A=M-1
-          M=D
-        ]
+        case @segment
+        when "constant"
+          %W[
+            @#{@offset}
+            D=M
+            @SP
+            M=M+1
+            A=M-1
+            M=D
+          ]
+        else
+          %W[
+            @#{@segment}
+            D=M
+            @#{@offset}
+            A=D+A
+            D=M
+            @SP
+            M=M+1
+            A=M-1
+            M=D
+          ]
+        end
       end
     end
   end
