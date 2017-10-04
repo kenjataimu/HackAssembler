@@ -1,7 +1,7 @@
 require "test_helper"
 require "hack_rb/assembler"
 
-class HackAssemblerTest < MiniTest::Test
+class AssemblerTest < MiniTest::Test
   class HackTestProgram
     def initialize(name)
       @name = name
@@ -21,7 +21,7 @@ class HackAssemblerTest < MiniTest::Test
     private
 
     def full_path(file_path)
-      File.join(Dir.pwd, "test/hack_assembler/files/#{file_path}")
+      File.join(Dir.pwd, "test/assembler/files/#{file_path}")
     end
   end
 

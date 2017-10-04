@@ -1,6 +1,6 @@
-require "hack_assembler_test"
+require "assembler_test"
 
-class PongTest < HackAssemblerTest
+class PongTest < AssemblerTest
   def test_assembles_add_program
     assert_assembles_program("Pong")
   end
