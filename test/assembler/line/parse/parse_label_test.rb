@@ -1,4 +1,4 @@
-require "line/parse_test"
+require "assembler/line/parse_test"
 
 class ParseLabelTest < ParseTest
   def test_parses_valid_label

@@ -1,4 +1,4 @@
-require "parser_test"
+require "assembler/parser_test"
 
 class InstructionsTest < ParserTest
   def asm_code

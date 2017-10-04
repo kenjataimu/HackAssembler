@@ -1,4 +1,4 @@
-require "line_test"
+require "assembler/line_test"
 
 class ParseTest < LineTest
   def setup

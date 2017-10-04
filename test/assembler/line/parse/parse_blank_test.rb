@@ -1,4 +1,4 @@
-require "line/parse_test"
+require "assembler/line/parse_test"
 
 class ParseBlankTest < ParseTest
   def test_parses_empty_line

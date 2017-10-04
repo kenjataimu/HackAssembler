@@ -1,6 +1,6 @@
-require "assembler_test"
+require "assembler/integration_test"
 
-class MaxTest < AssemblerTest
+class MaxTest < IntegrationTest
   def test_assembles_add_program
     assert_assembles_program("Max")
   end

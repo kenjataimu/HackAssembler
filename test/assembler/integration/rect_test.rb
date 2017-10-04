@@ -1,6 +1,6 @@
-require "assembler_test"
+require "assembler/integration_test"
 
-class RectTest < AssemblerTest
+class RectTest < IntegrationTest
   def test_assembles_add_program
     assert_assembles_program("Rect")
   end
