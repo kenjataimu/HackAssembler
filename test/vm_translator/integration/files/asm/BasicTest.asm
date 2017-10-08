@@ -145,11 +145,11 @@ A=M-1
 M=D
 
 //pop temp 6
-@11
-D=M
 @SP
-M=M+1
-A=M-1
+M=M-1
+A=M
+D=M
+@11
 M=D
 
 //push local 0
@@ -199,7 +199,7 @@ M=M-1
 A=M
 D=M
 A=A-1
-M=D-M
+M=M-D
 
 //push this 6
 @THIS
@@ -237,7 +237,7 @@ M=M-1
 A=M
 D=M
 A=A-1
-M=D-M
+M=M-D
 
 //push temp 6
 @11
