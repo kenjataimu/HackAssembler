@@ -21,21 +21,42 @@ module HackRB
       end
 
       def to_asm
-        %W[
-          @#{@segment}
-          D=M
-          @#{@offset}
-          D=D+A
-          @R13
-          M=D
-          @SP
-          M=M-1
-          A=M
-          D=M
-          @R13
-          A=M
-          M=D
-        ]
+        case @segment
+        when "static"
+          %W[
+            @SP
+            M=M+1
+            A=M-1
+            D=M
+            @#{filename}.#{@offset}
+            M=D
+          ]
+        when "temp"
+          %W[
+            @SP
+            M=M-1
+            A=M
+            D=M
+            @#{5 + @offset.to_i}
+            M=D
+          ]
+        else
+          %W[
+            @#{@segment}
+            D=M
+            @#{@offset}
+            D=D+A
+            @R13
+            M=D
+            @SP
+            M=M-1
+            A=M
+            D=M
+            @R13
+            A=M
+            M=D
+          ]
+        end
       end
     end
   end
