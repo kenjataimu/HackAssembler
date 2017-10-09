@@ -1,7 +1,7 @@
 module HackRB
   module VMTranslator
     class Line
-      def initialize(body, number)
+      def initialize(body, number, filename)
         @body = body
         @number = number
       end

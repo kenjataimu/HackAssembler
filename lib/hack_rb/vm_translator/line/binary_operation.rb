@@ -47,7 +47,6 @@ module HackRB
             A=M-1
             M=D
           ]
-        end
         when "gt"
           %W[
             @SP
@@ -72,7 +71,6 @@ module HackRB
             A=M-1
             M=D
           ]
-        end
         when "lt"
           %W[
             @SP
@@ -97,7 +95,6 @@ module HackRB
             A=M-1
             M=D
           ]
-        end
         when "and"
           %w[
             @SP
@@ -107,7 +104,6 @@ module HackRB
             A=A-1
             M=D&M
           ]
-        end
         when "or"
           %w[
             @SP
