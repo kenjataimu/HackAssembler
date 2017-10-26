@@ -46,7 +46,14 @@ D=M
 M=M+1
 A=M-1
 M=D
+
 //add
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+M=D+M
 
 //push argument 1
 @ARG
