@@ -1,6 +1,18 @@
 //function SimpleFunction.test 2
 (SimpleFunction.test)
 
+//push 0
+@SP
+M=M+1
+A=M-1
+M=0
+
+//push 0
+@SP
+M=M+1
+A=M-1
+M=0
+
 //push local 0
 @LCL
 D=M
