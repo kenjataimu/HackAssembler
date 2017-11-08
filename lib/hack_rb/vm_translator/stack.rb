@@ -44,9 +44,27 @@ module HackRB
 
         def eq
           move_top +
-          <<~NEG
-            M=-M
-          NEG
+          VirtualMachine.uniq_label do |label|
+            <<~EQ
+              @SP
+              M=M-1
+              A=M
+              D=M
+              A=A-1
+              D=D-M
+              @#{label.false}
+              D;JNE
+              D=-1
+              @#{label.end}
+              0;JMP
+              (#{label.false})
+              D=0
+              (#{label.end})
+              @SP
+              A=M-1
+              M=D
+            EQ
+          end
         end
 
         private
