@@ -7,6 +7,16 @@ module HackRB
           @count = count
         end
 
+        def method_missing(m, *args, &block)
+          if m == :ret
+            wrap("$ret.")
+          else
+            wrap(".#{m.to_s.capitalize}.")
+          end
+        end
+
+        private
+
         def wrap(string)
           "#{@name}#{string}#{@count}"
         end
@@ -18,8 +28,8 @@ module HackRB
       end
 
       def self.uniq_label
-        yield Label.new(@class_name, @label_count)
         @label_count = @label_count + 1
+        yield Label.new(@class_name, @label_count)
       end
     end
   end

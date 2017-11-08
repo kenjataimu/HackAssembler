@@ -121,18 +121,17 @@ M=D
 
 //lt
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
 A=A-1
-D=D-M
-@StackTest.False.12
-D;JLE
-D=-1
+D=M-D
+@StackTest.True.12
+D;JLT
+D=0
 @StackTest.End.12
 0;JMP
-(StackTest.False.12)
-D=0
+(StackTest.True.12)
+D=-1
 (StackTest.End.12)
 @SP
 A=M-1

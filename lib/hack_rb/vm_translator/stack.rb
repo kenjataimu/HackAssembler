@@ -2,6 +2,132 @@ module HackRB
   module VMTranslator
     module Stack
       class << self
+        def add
+          binary_operation { add_m }
+        end
+
+        def sub
+          binary_operation { sub_m }
+        end
+
+        def neg
+          unary_operation { neg_m }
+        end
+
+        def eq
+          compare { jeq }
+        end
+
+        def gt
+          compare { jgt }
+        end
+  
+        def lt
+          compare { jlt }
+        end
+
+        def and
+          binary_operation { and_m }
+        end
+
+        def or
+          binary_operation { or_m }
+        end
+
+        def not
+          unary_operation { not_m }
+        end
+
+        private
+
+        def binary_operation(&operation)
+          pop_d +
+          move_up +
+          operation.call
+        end
+
+        def unary_operation(&operation)
+          move_top +
+          operation.call
+        end
+
+        def add_m
+          <<~ADD_M
+            M=D+M
+          ADD_M
+        end
+
+        def sub_m
+          <<~SUB_M
+            M=M-D
+          SUB_M
+        end
+
+        def sub_d
+          <<~SUB_D
+            D=M-D
+          SUB_D
+        end
+
+        def neg_m
+          <<~NEG_M
+            M=-M
+          NEG_M
+        end
+
+        def and_m
+          <<~AND_M
+            M=D&M
+          AND_M
+        end
+
+        def or_m
+          <<~OR_M
+            M=D|M
+          OR_M
+        end
+
+        def not_m
+          <<~NOT_M
+            M=!M
+          NOT_M
+        end
+
+        def compare(&jmp)
+          pop_d +
+          move_up +
+          sub_d +
+          compare_d(jmp.call) +
+          replace_d
+        end
+
+        def compare_d(condition)
+          VirtualMachine.uniq_label do |label|
+            <<~COMPARE
+              @#{label.true}
+              D;#{condition}
+              D=0
+              @#{label.end}
+              0;JMP
+              (#{label.true})
+              D=-1
+              (#{label.end})
+            COMPARE
+          end
+        end
+
+        def jeq
+          "JEQ"
+        end
+
+        def jlt
+          "JLT"
+        end
+
+        def jgt
+          "JGT"
+        end
+
         def push_d
           <<~PUSH_D
             @SP
@@ -19,56 +145,6 @@ module HackRB
           POP_D
         end
 
-        def add
-          pop_d +
-          move_up +
-          <<~ADD
-            M=D+M
-          ADD
-        end
-
-        def sub
-          pop_d +
-          move_up +
-          <<~SUB
-            M=M-D
-          SUB
-        end
-
-        def neg
-          move_top +
-          <<~NEG
-            M=-M
-          NEG
-        end
-
-        def eq
-          move_top +
-          VirtualMachine.uniq_label do |label|
-            <<~EQ
-              @SP
-              M=M-1
-              A=M
-              D=M
-              A=A-1
-              D=D-M
-              @#{label.false}
-              D;JNE
-              D=-1
-              @#{label.end}
-              0;JMP
-              (#{label.false})
-              D=0
-              (#{label.end})
-              @SP
-              A=M-1
-              M=D
-            EQ
-          end
-        end
-
-        private
-
         def move_up
           <<~MOVE_UP
             A=A-1
@@ -82,8 +158,13 @@ module HackRB
           TOP
         end
 
-        def sub_d
+        def replace_d
+          move_top +
+          <<~REPLACE_D
+            M=D
+          REPLACE_D
         end
+
       end
     end
   end
