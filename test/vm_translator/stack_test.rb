@@ -1,6 +1,7 @@
 require "test_helper"
 require "hack_rb/vm_translator/virtual_machine"
 require "hack_rb/vm_translator/stack"
+require "hack_rb/vm_translator/segment"
 
 class StackTest < MiniTest::Test
   def setup_vm_class_name
@@ -127,5 +128,32 @@ class StackTest < MiniTest::Test
       A=M-1
       M=!M
     NOT
+  end
+
+  def test_push_argument_1
+    argument = HackRB::VMTranslator::Segment::Argument
+    assert_equal <<~PUSH_ARGUMENT_1, HackRB::VMTranslator::Stack.push(argument, 1)
+      @ARG
+      D=M
+      @1
+      A=D+A
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_ARGUMENT_1
+  end
+
+  def test_push_constant_234
+    constant = HackRB::VMTranslator::Segment::Constant
+    assert_equal <<~PUSH_CONSTANT_234, HackRB::VMTranslator::Stack.push(constant, 234)
+      @234
+      D=A
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_CONSTANT_234
   end
 end

@@ -2,6 +2,11 @@ module HackRB
   module VMTranslator
     module Stack
       class << self
+        def push(segment, offset)
+          segment.pop_d(offset) +
+          push_d
+        end
+
         def add
           binary_operation { add_m }
         end
@@ -164,7 +169,6 @@ module HackRB
             M=D
           REPLACE_D
         end
-
       end
     end
   end

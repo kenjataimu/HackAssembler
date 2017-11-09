@@ -1,35 +1,29 @@
+require "hack_rb/vm_translator/label"
+
 module HackRB
   module VMTranslator
     module VirtualMachine
-      class Label
-        def initialize(name, count)
-          @name = name
-          @count = count
+      class << self
+        def class_name=(class_name)
+          @class_name = class_name
+          @label_count = 0
         end
 
-        def method_missing(m, *args, &block)
-          if m == :ret
-            wrap("$ret.")
-          else
-            wrap(".#{m.to_s.capitalize}.")
+        def uniq_label
+          @label_count = @label_count + 1
+          yield Label.new(@class_name, @label_count)
+        end
+
+        def segment(segment_name)
+          Segment.get(segment_name)
+        end
+
+        def execute(command)
+          case command
+          when /(push|pop) (\w+) (\d+)/
+            Stack.public_send($1, segment($2), $3) 
           end
         end
-
-        private
-
-        def wrap(string)
-          "#{@name}#{string}#{@count}"
-        end
-      end
-
-      def self.class_name=(class_name)
-        @class_name = class_name
-        @label_count = 0
-      end
-
-      def self.uniq_label
-        @label_count = @label_count + 1
-        yield Label.new(@class_name, @label_count)
       end
     end
   end
