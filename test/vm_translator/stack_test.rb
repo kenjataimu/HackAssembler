@@ -145,6 +145,34 @@ class StackTest < MiniTest::Test
     PUSH_ARGUMENT_1
   end
 
+  def test_push_local_17
+    local = HackRB::VMTranslator::Segment::Local
+    assert_equal <<~PUSH_LOCAL_17, HackRB::VMTranslator::Stack.push(local, 17)
+      @LCL
+      D=M
+      @17
+      A=D+A
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_LOCAL_17
+  end
+
+  def test_push_static_456
+    setup_vm_class_name
+    static = HackRB::VMTranslator::Segment::Static
+    assert_equal <<~PUSH_STATIC_456, HackRB::VMTranslator::Stack.push(static, 456)
+      @StackTest.456
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_STATIC_456
+  end
+
   def test_push_constant_234
     constant = HackRB::VMTranslator::Segment::Constant
     assert_equal <<~PUSH_CONSTANT_234, HackRB::VMTranslator::Stack.push(constant, 234)
@@ -155,5 +183,71 @@ class StackTest < MiniTest::Test
       A=M-1
       M=D
     PUSH_CONSTANT_234
+  end
+
+  def test_push_this_7
+    this = HackRB::VMTranslator::Segment::This
+    assert_equal <<~PUSH_THIS_7, HackRB::VMTranslator::Stack.push(this, 7)
+      @THIS
+      D=M
+      @7
+      A=D+A
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_THIS_7
+  end
+
+  def test_push_that_13
+    that = HackRB::VMTranslator::Segment::That
+    assert_equal <<~PUSH_THAT_13, HackRB::VMTranslator::Stack.push(that, 13)
+      @THAT
+      D=M
+      @13
+      A=D+A
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_THAT_13
+  end
+
+  def test_push_pointer_0
+    pointer = HackRB::VMTranslator::Segment::Pointer
+    assert_equal <<~PUSH_POINTER_0, HackRB::VMTranslator::Stack.push(pointer, 0)
+      @THIS
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_POINTER_0
+  end
+
+  def test_push_pointer_1
+    pointer = HackRB::VMTranslator::Segment::Pointer
+    assert_equal <<~PUSH_POINTER_1, HackRB::VMTranslator::Stack.push(pointer, 1)
+      @THAT
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_POINTER_1
+  end
+
+  def test_push_temp_3
+    temp = HackRB::VMTranslator::Segment::Temp
+    assert_equal <<~PUSH_TEMP_3, HackRB::VMTranslator::Stack.push(temp, 3)
+      @8
+      D=M
+      @SP
+      M=M+1
+      A=M-1
+      M=D
+    PUSH_TEMP_3
   end
 end

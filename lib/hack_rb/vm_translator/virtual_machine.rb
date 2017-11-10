@@ -9,6 +9,10 @@ module HackRB
           @label_count = 0
         end
 
+        def label
+          @class_name
+        end
+
         def uniq_label
           @label_count = @label_count + 1
           yield Label.new(@class_name, @label_count)

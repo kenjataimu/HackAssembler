@@ -10,12 +10,10 @@ module HackRB
           seek(offset) +
           save_d
         end
-      end
 
-      class Argument < Base
         def self.seek(offset)
           <<~SEEK
-            @ARG
+            @#{pointer}
             D=M
             @#{offset}
             A=D+A
@@ -26,6 +24,60 @@ module HackRB
           <<~SAVE_D
             D=M
           SAVE_D
+        end
+      end
+
+      class Argument < Base
+        def self.pointer
+          "ARG"
+        end
+      end
+
+      class Local < Base
+        def self.pointer
+          "LCL"
+        end
+      end
+
+      class Static < Base
+        def self.seek(offset)
+          <<~SEEK
+            @#{label}.#{offset}
+          SEEK
+        end
+
+        def self.label
+          VirtualMachine.label
+        end
+      end
+
+      class This < Base
+        def self.pointer
+          "THIS"
+        end
+      end
+
+      class That < Base
+        def self.pointer
+          "THAT"
+        end
+      end
+
+      class Pointer < Base
+        def self.seek(offset)
+          pointer = offset == 0 ? "THIS" : "THAT"
+
+          <<~SEEK
+            @#{pointer}
+          SEEK
+        end
+      end
+
+      class Temp < Base
+        def self.seek(offset)
+          <<~SEEK
+            @#{offset.to_i + 5}
+          SEEK
         end
       end
 
