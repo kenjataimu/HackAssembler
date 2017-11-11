@@ -41,13 +41,11 @@ module HackRB
 
       class Static < Base
         def self.seek(offset)
-          <<~SEEK
-            @#{label}.#{offset}
-          SEEK
+          Label.at("#{label}.#{offset}")
         end
 
         def self.label
-          VirtualMachine.label
+          VirtualMachine.current_class
         end
       end
 

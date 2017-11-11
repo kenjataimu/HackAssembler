@@ -5,7 +5,7 @@ require "hack_rb/vm_translator/segment"
 
 class StackTest < MiniTest::Test
   def setup_vm_class_name
-    HackRB::VMTranslator::VirtualMachine.class_name = "StackTest"
+    HackRB::VMTranslator::VirtualMachine.current_class = "StackTest"
   end
 
   def test_add
