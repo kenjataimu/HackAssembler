@@ -109,14 +109,14 @@ module HackRB
         def compare_d(condition)
           VirtualMachine.uniq_label do |label|
             <<~COMPARE
-              @#{label.true}
+              #{label.at.true}
               D;#{condition}
               D=0
-              @#{label.end}
+              #{label.at.end}
               0;JMP
-              (#{label.true})
+              #{label.true}
               D=-1
-              (#{label.end})
+              #{label.end}
             COMPARE
           end
         end

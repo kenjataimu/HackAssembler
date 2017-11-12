@@ -2,15 +2,18 @@ module HackRB
   module VMTranslator
     class Label
       def self.declare(name)
+        <<~DECLARE
+          (#{name})
+        DECLARE
       end
 
       def self.at(name)
-        <<~SEEK
+        <<~AT
           @#{name}
-        SEEK
+        AT
       end
 
-      def self.got_to(name)
+      def self.go_to(name)
       end
 
       def self.if_goto(name)
@@ -19,6 +22,11 @@ module HackRB
       def initialize(name, count)
         @name = name
         @count = count
+      end
+
+      def at
+        @wrapper = "@%{string}"
+        self
       end
 
       def method_missing(m, *args, &block)
@@ -32,7 +40,13 @@ module HackRB
       private
 
       def wrap(string)
-        "#{@name}#{string}#{@count}"
+        wrapper % {string: "#{@name}#{string}#{@count}"}
+      end
+
+      def wrapper
+        (@wrapper || "(%{string})").tap do
+          @wrapper = nil
+        end
       end
     end
   end
