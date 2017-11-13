@@ -7,6 +7,12 @@ module HackRB
           push_d
         end
 
+        def pop(segment, offset)
+          segment.push_d(offset) do
+            pop_d
+          end
+        end
+
         def add
           binary_operation { add_m }
         end
