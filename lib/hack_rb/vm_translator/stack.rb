@@ -8,9 +8,9 @@ module HackRB
         end
 
         def pop(segment, offset)
-          segment.push_d(offset) do
-            pop_d
-          end
+          segment.store(offset) +
+          pop_d +
+          segment.push_d
         end
 
         def add
