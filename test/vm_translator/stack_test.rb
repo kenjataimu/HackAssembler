@@ -250,4 +250,41 @@ class StackTest < MiniTest::Test
       M=D
     PUSH_TEMP_3
   end
+
+  def test_pop_argument_10
+    argument = HackRB::VMTranslator::Segment::Argument
+    assert_equal <<~POP_ARGUMENT_10, HackRB::VMTranslator::Stack.pop(argument, 10)
+      @ARG
+      D=M
+      @10
+      D=D+A
+      @R13
+      M=D
+      @SP
+      AM=M-1
+      D=M
+      @R13
+      A=M
+      M=D
+    POP_ARGUMENT_10
+  end
+
+  def test_pop_local_12
+    local = HackRB::VMTranslator::Segment::Local
+    assert_equal <<~POP_LOCAL_12, HackRB::VMTranslator::Stack.pop(local, 12)
+      @LCL
+      D=M
+      @12
+      D=D+A
+      @R13
+      M=D
+      @SP
+      AM=M-1
+      D=M
+      @R13
+      A=M
+      M=D
+    POP_LOCAL_12
+  end
+
 end

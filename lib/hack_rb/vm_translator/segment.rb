@@ -6,40 +6,47 @@ module HackRB
       end
 
       class Base
-        def self.pop_d(offset)
-          seek(offset) +
-          save_d
+        def self.at(offset, &block)
+          @offset = offset
+
+          if block_given?
+            push(block)
+          else
+            self
+          end
         end
 
-        def self.push_d
-          Register.address +
-          store_d
-        end
-
-        def self.store(offset)
-          calculate(offset, destination: "D") +
-          Register.save_d
+        def self.pop
+          seek +
+          copy
         end
 
         private
 
-        def self.seek(offset)
-          calculate(offset, destination: "A")
+        def self.push(block)
+          calculate("D") +
+          Register.value.set +
+          block.call +
+          Register.address.set
         end
 
-        def self.calculate(offset, destination:)
+        def self.seek
+          calculate("A")
+        end
+
+        def self.copy
+          <<~POP
+            D=M
+          POP
+        end
+
+        def self.calculate(destination)
           <<~CALCULATE
             @#{pointer}
             D=M
-            @#{offset}
+            @#{@offset}
             #{destination}=D+A
           CALCULATE
-        end
-
-        def self.save_d
-          <<~SAVE
-            D=M
-          SAVE
         end
       end
 
@@ -56,8 +63,8 @@ module HackRB
       end
 
       class Static < Base
-        def self.seek(offset)
-          Label.at("#{label}.#{offset}")
+        def self.seek
+          Label.at("#{label}.#{@offset}")
         end
 
         def self.label
@@ -78,52 +85,64 @@ module HackRB
       end
 
       class Pointer < Base
-        def self.seek(offset)
-          Label.at(offset == 0 ? "THIS" : "THAT")
+        def self.seek
+          Label.at(@offset == 0 ? "THIS" : "THAT")
         end
       end
 
       class Temp < Base
-        def self.seek(offset)
-          Label.at(offset.to_i + 5)
+        def self.seek
+          Label.at(@offset.to_i + 5)
         end
       end
 
       class Constant < Base
-        def self.seek(offset)
-          Label.at(offset)
+        def self.seek
+          Label.at(@offset)
         end
 
-        def self.save_d
-          <<~SAVE_D
+        def self.copy
+          <<~COPY
             D=A
-          SAVE_D
+          COPY
         end
       end
 
       class Register
-        @current_register = 13
+        @address = 13
+        @indirect = true
 
-        def self.save_d
+        def self.set
           peek +
-          <<~SAVE_D.tap { @current_register += 1 }
+          <<~SET
             M=D
-          SAVE_D
+          SET
+        end
+
+        def self.value
+          @indirect = false
+          self
         end
 
         def self.address
-          peek +
-          <<~ADDRESS.tap { @current_register -= 1 }
-            A=M
-          ADDRESS
+          @indirect = true
+          self
         end
 
         private
 
         def self.peek
-          <<~PEEK
-            @R#{@current_register}
+          <<~PEEK + go_to.to_s
+            @R#{@address}
           PEEK
+        end
+
+        def self.go_to
+          if @indirect
+            <<~GO_TO
+              A=M
+            GO_TO
+          end
         end
       end
     end
