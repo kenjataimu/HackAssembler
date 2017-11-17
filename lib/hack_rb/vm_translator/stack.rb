@@ -3,12 +3,11 @@ module HackRB
     module Stack
       class << self
         def push(segment, offset)
-          segment.at(offset).pop +
-          push_d
+          segment.at(offset).pop { push_d }
         end
 
         def pop(segment, offset)
-          segment.at(offset) { pop_d }
+          segment.at(offset).push { pop_d }
         end
 
         def add

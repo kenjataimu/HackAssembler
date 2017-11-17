@@ -287,4 +287,84 @@ class StackTest < MiniTest::Test
     POP_LOCAL_12
   end
 
+  def test_pop_static_53
+    setup_vm_class_name
+    static = HackRB::VMTranslator::Segment::Static
+    assert_equal <<~POP_STATIC_53, HackRB::VMTranslator::Stack.pop(static, 53)
+      @SP
+      AM=M-1
+      D=M
+      @StackTest.53
+      M=D
+    POP_STATIC_53
+  end
+
+  def test_pop_this_2
+    this = HackRB::VMTranslator::Segment::This
+    assert_equal <<~POP_THIS_2, HackRB::VMTranslator::Stack.pop(this, 2)
+      @THIS
+      D=M
+      @2
+      D=D+A
+      @R13
+      M=D
+      @SP
+      AM=M-1
+      D=M
+      @R13
+      A=M
+      M=D
+    POP_THIS_2
+  end
+
+  def test_pop_that_10
+    that = HackRB::VMTranslator::Segment::That
+    assert_equal <<~POP_THAT_10, HackRB::VMTranslator::Stack.pop(that, 10)
+      @THAT
+      D=M
+      @10
+      D=D+A
+      @R13
+      M=D
+      @SP
+      AM=M-1
+      D=M
+      @R13
+      A=M
+      M=D
+    POP_THAT_10
+  end
+
+  def test_pop_pointer_0
+    pointer = HackRB::VMTranslator::Segment::Pointer
+    assert_equal <<~POP_POINTER_0, HackRB::VMTranslator::Stack.pop(pointer, 0)
+      @SP
+      AM=M-1
+      D=M
+      @THIS
+      M=D
+    POP_POINTER_0
+  end
+
+  def test_pop_pointer_1
+    pointer = HackRB::VMTranslator::Segment::Pointer
+    assert_equal <<~POP_POINTER_1, HackRB::VMTranslator::Stack.pop(pointer, 1)
+      @SP
+      AM=M-1
+      D=M
+      @THAT
+      M=D
+    POP_POINTER_1
+  end
+
+  def test_pop_temp_2
+    temp = HackRB::VMTranslator::Segment::Temp
+    assert_equal <<~POP_TEMP_2, HackRB::VMTranslator::Stack.pop(temp, 2)
+      @SP
+      AM=M-1
+      D=M
+      @7
+      M=D
+    POP_TEMP_2
+  end
 end

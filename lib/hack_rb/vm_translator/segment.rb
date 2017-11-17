@@ -6,29 +6,25 @@ module HackRB
       end
 
       class Base
-        def self.at(offset, &block)
+        def self.at(offset)
           @offset = offset
-
-          if block_given?
-            push(block)
-          else
-            self
-          end
+          self
         end
 
-        def self.pop
+        def self.pop(&block)
           seek +
-          copy
+          copy +
+          block.call
+        end
+
+        def self.push(&block)
+          calculate("D") +
+          TempRegister.value.set +
+          block.call +
+          TempRegister.address.set
         end
 
         private
-
-        def self.push(block)
-          calculate("D") +
-          Register.value.set +
-          block.call +
-          Register.address.set
-        end
 
         def self.seek
           calculate("A")
@@ -38,6 +34,12 @@ module HackRB
           <<~POP
             D=M
           POP
+        end
+
+        def self.set
+          <<~SET
+            M=D
+          SET
         end
 
         def self.calculate(destination)
@@ -63,9 +65,21 @@ module HackRB
       end
 
       class Static < Base
-        def self.seek
-          Label.at("#{label}.#{@offset}")
+        def self.pointer
+          "#{label}.#{@offset}"
         end
+
+        def self.seek
+          Label.at(pointer)
+        end
+
+        def self.push(&block)
+          block.call +
+          seek +
+          set
+        end
+
+        private
 
         def self.label
           VirtualMachine.current_class
@@ -84,15 +98,15 @@ module HackRB
         end
       end
 
-      class Pointer < Base
-        def self.seek
-          Label.at(@offset == 0 ? "THIS" : "THAT")
+      class Pointer < Static
+        def self.pointer
+          @offset == 0 ? "THIS" : "THAT"
         end
       end
 
-      class Temp < Base
-        def self.seek
-          Label.at(@offset.to_i + 5)
+      class Temp < Static
+        def self.pointer
+          @offset.to_i + 5
         end
       end
 
@@ -108,7 +122,7 @@ module HackRB
         end
       end
 
-      class Register
+      class TempRegister
         @address = 13
         @indirect = true
 
